@@ -1,0 +1,26 @@
+ #docker run -v $HOME/crate/datos:/data --publish 4200:4200 --publish 5432:5432 crate -Cdiscovery.type=single-node
+
+version: "3.7"
+services:
+  app:
+    image: gorkadra/crate-insert:v2
+    links:
+      - crate
+    depends_on:
+      - crate
+
+  crate:
+    image: crate
+    restart: always
+    ports:
+      - 4200:4200
+      - 5432:5432
+    volumes:
+      - $HOME/crate/datos:/data
+    command: ["crate","-Cdiscovery.type=single-node"]
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+
