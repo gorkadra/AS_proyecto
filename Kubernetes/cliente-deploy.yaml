@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: crate-insert
+  labels:
+    component: cliente
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: cliente
+  template:
+    metadata:
+      labels:
+        component: cliente
+    spec:
+      containers:
+        - name: crate-insert
+          image: gorkadra/crate-insert:v2
+          ports:
+            - containerPort: 4200
+            - containerPort: 5432
+      restartPolicy: Always
+      volumeMounts:
+        - name: montaje-volumen
+          mountPath: /var/lib/crate/data
+    volumes:
+      - name: montaje-volumen
+        persistentVolumeClaim:
+          claimName: crate-vol
