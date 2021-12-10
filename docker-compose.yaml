@@ -3,7 +3,7 @@
 version: "3.7"
 services:
   app:
-    image: gorkadra/crate-insert:v2
+    image: gorkadra/crate-insert
     links:
       - crate
     depends_on:

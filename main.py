@@ -2,14 +2,13 @@
 import time
 from crate import client
 
-
-
 def main():
     time.sleep(15)
     connection = client.connect("http://"+'crate'+":4200/", username="crate")
 
     #
     cursor = connection.cursor()
+    cursor.execute("DROP TABLE IF EXISTS adib")
     cursor.execute("CREATE TABLE adib (ts TIMESTAMP, val DOUBLE PRECISION, part GENERATED ALWAYS AS date_trunc('month',ts)) PARTITIONED BY(part);")
     cursor.execute("INSERT INTO adib (ts,val) VALUES (1617823229974, 1.23);")
     cursor.execute("INSERT INTO adib (ts,val) VALUES (1620415701974, 2.31);")
